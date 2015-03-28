@@ -1,0 +1,19 @@
+{
+	"name": "webmodules-foo",
+	"version": "0.0.0",
+	"main": "foo.js",
+	"description": "Module loader system detect and invoke",
+  
+	"authors": [
+		{ "name": "Lalit Tanwar" }
+	],
+
+	"repository": {
+  		"type": "git",
+  		"url": "git://github.com/webmodule/dummy-json.git"
+	},
+
+	"dependencies": {
+		"handlebars": "3.0.0"
+	}
+}
