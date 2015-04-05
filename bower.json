@@ -1,19 +1,26 @@
 {
-	"name": "webmodules-foo",
-	"version": "0.0.0",
-	"main": "foo.js",
-	"description": "Module loader system detect and invoke",
-  
-	"authors": [
-		{ "name": "Lalit Tanwar" }
-	],
-
-	"repository": {
-  		"type": "git",
-  		"url": "git://github.com/webmodule/dummy-json.git"
-	},
-
-	"dependencies": {
-		"handlebars": "3.0.0"
-	}
+  "name": "webmodules-foo",
+  "version": "0.0.3",
+  "main": "foo.js",
+  "description": "Module loader system detect and invoke",
+  "authors": [
+    "lalit.tanwar07@gmail.com"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/webmodule/dummy-json.git"
+  },
+  "dependencies": {
+  },
+  "keywords": [
+    "polyfils"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
