@@ -67,15 +67,20 @@
 		if (!event)
 			var event = window.event;
 		if (event) {
-		 	event.preventDefault && event.preventDefault();
+			if(event.preventDefault!==undefined){
+				event.preventDefault && event.preventDefault();
+			}
 			event.cancelBubble = true;
 			event.returnValue = false;
-			event.stopPropagation && event.stopPropagation();
-			event.stopImmediatePropagation
-					&& event.stopImmediatePropagation();
+			if(event.stopPropagation!==undefined){
+				event.stopPropagation();
+			}
+			if(event.stopImmediatePropagation!==undefined){
+				event.stopImmediatePropagation();
+			}
 			return false;
 		}
-	}
+	};
 	
 })(this);
 
@@ -394,6 +399,6 @@
 		  }
 	
 	
-})(this)
+})(this);
 
 
