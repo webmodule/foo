@@ -9,8 +9,8 @@
 			return utils.define(modeulName).as(cb.bind(root));
 		} else {
 			var factory = function() {
-				var X = {};
-				var _X = cb.bind(root)(X);
+				var X = {},x;
+				var _X = cb.bind(root)(X,x);
 				return _X || X;
 			};
 			if (typeof root.define === 'function' && root.define.amd) {
