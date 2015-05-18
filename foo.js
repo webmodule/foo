@@ -6,12 +6,12 @@
 
 		if (root.utils && typeof root.utils.define === 'function') {
 			// Utils Package System
-			return utils.define(modeulName).as(cb);
+			return utils.define(modeulName).as(cb.bind(root));
 		} else {
 			var factory = function() {
 				var X = {};
-				cb(X);
-				return X;
+				var _X = cb.bind(root)(X);
+				return _X || X;
 			};
 			if (typeof root.define === 'function' && root.define.amd) {
 				// AMD based package system
