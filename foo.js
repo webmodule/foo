@@ -29,6 +29,19 @@
 		}
 
 	};
+	
+	
+	foo.createNamespace = function(nameSpace,valObj){
+		var nspace = nameSpace.split('.');
+		var win = window;
+		var retspace = nspace[0];
+		for(var i =0; i<nspace.length-1; i++){
+			if (!win[nspace[i]]) win[nspace[i]] = {};
+			retspace = nspace[i];
+			win = win[retspace];
+		}
+		return win[nspace[nspace.length-1]] = valObj;
+	}
 
 	foo.debounce = function debounce(func, wait, immediate) {
 		var timeout, args, context, timestamp, result;
