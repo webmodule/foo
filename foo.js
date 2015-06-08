@@ -1,6 +1,53 @@
 (function(foo) {
 
 	"use strict";
+	
+	var mix = function(obj, proto) {
+		for ( var prop in proto) {
+			if (proto.hasOwnProperty(prop)) {
+				obj[prop] = proto[prop];
+			}
+		}
+	};
+	
+	var _define_ = function(moduleName,fromModuleName, definition){
+		var fromModule = foo[fromModuleName] || {};
+		var thisModule = Object.create(fromModule);
+		foo[moduleName] = definition(thisModule) || thisModule;
+		return foo[moduleName];
+	};
+	
+	foo._define_ = function(moduleName,fromModule, definition){
+		if(typeof definition === 'function' && typeof fromModule === 'string'){
+			return _define_(moduleName,fromModule, definition);
+		} else if(typeof fromModule === 'function'){
+			return _define_(moduleName,null, fromModule);
+		} else if(typeof definition === 'object' && typeof fromModule === 'string'){
+			return _define_(moduleName,fromModule, function(thisModule){
+				mix(thisModule,definition);
+			});
+		} else if(typeof fromModule === 'object'){
+			return _define_(moduleName,null, function(thisModule){
+				mix(thisModule,fromModule);
+			});
+		}
+	};
+	
+	foo._module_ = function(moduleName){
+		return foo[moduleName];
+	};
+	
+	foo._tag_ = function(tagName,definition){
+		return console.warn("No tag Registrar found");
+	};
+	
+	foo._require_ = function(){
+		var modules = []
+		for(var i in arguments){
+			modules.push(foo._module_(arguments[i]));
+		}
+	};
+	
 
 	foo.registerModule = function registerModule(root, modeulName, cb) {
 
@@ -33,7 +80,7 @@
 	
 	foo.createNamespace = function(root,nameSpace,valObj){
 		var nspace = nameSpace.split('.');
-		var win = root || window;
+		var win = root || foo;
 		var retspace = nspace[0];
 		for(var i =0; i<nspace.length-1; i++){
 			if (!win[nspace[i]]) win[nspace[i]] = {};
