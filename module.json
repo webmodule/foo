@@ -1,0 +1,7 @@
+{
+	"webmodules/foo" : {
+		"js" : [
+			"foo.js"
+		]
+	}
+}

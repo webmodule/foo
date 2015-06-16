@@ -2,7 +2,7 @@
   "name": "webmodules-foo",
   "version": "0.0.3",
   "main": "foo.js",
-  "description": "Module loader system detect and invoke",
+  "description": "Module loader interface and polyfills",
   "authors": [
     "lalit.tanwar07@gmail.com"
   ],

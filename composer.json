@@ -1,18 +1,10 @@
 {
 	"name" : "webmodules/foo",
 	"type" : "library",
-	"description" : "JQuery Utilitties compatible with rudrax framework",
+	"description" : "Module loader interface and polyfills",
 	"keywords" : [
-		"rudra",
-		"API"
+		"module",
+		"polyfills"
 	],
-	"license" : "MIT",
-	"_loader_" : {
-		"_all_" : {
-			"files" : [
-				"foo.js",
-				"polyfill.js"
-			]
-		}
-	}
+	"license" : "MIT"
 }
