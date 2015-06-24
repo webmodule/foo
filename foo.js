@@ -13,6 +13,7 @@
 	var _define_ = function(moduleName,fromModuleName, definition){
 		var fromModule = foo[fromModuleName] || {};
 		var thisModule = Object.create(fromModule);
+		return foo.createNamespace(moduleName,definition(thisModule) || thisModule);
 		foo[moduleName] = definition(thisModule) || thisModule;
 		return foo[moduleName];
 	};
