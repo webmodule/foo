@@ -13,7 +13,7 @@
 	var _define_ = function(moduleName,fromModuleName, definition){
 		var fromModule = foo[fromModuleName] || {};
 		var thisModule = Object.create(fromModule);
-		return foo.createNamespace(moduleName,definition(thisModule) || thisModule);
+		return foo._namespace_(foo,moduleName,definition(thisModule) || thisModule);
 		foo[moduleName] = definition(thisModule) || thisModule;
 		return foo[moduleName];
 	};
@@ -79,7 +79,7 @@
 	};
 	
 	
-	foo.createNamespace = function(root,nameSpace,valObj){
+	foo._namespace_ = function(root,nameSpace,valObj){
 		var nspace = nameSpace.split('.');
 		var win = root || foo;
 		var retspace = nspace[0];
