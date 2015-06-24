@@ -1,5 +1,5 @@
 {
 	"webmodules/foo": {
-		"js": ["polyfills.js", "foo.js", "stacktrace.js"]
+		"js": ["polyfills.js", "foo.js", "stacktrace.js","jsonutil.js","fileutil.js"]
 	}
 }

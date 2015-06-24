@@ -1,3 +1,9 @@
+if(!window.BrowserDetect){
+	window.BrowserDetect = new (function(){
+		this.isBelowIE9 = false;
+	});
+}
+
 if (typeof Object.getPrototypeOf !== "function") {
 	if (typeof "test".__proto__ === "object") {
 		Object.getPrototypeOf = function(object) {
