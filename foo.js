@@ -79,7 +79,15 @@
 	};
 	
 	
-	foo._namespace_ = function(root,nameSpace,valObj){
+	foo._namespace_ = function(_root,_nameSpace,_valObj){
+		var root = _root;
+		var nameSpace = _nameSpace;
+		var valObj = _valObj;
+		if(typeof _root === "string"){
+			root = foo;
+			nameSpace = _root;
+			valObj = _nameSpace;
+		}
 		var nspace = nameSpace.split('.');
 		var win = root || foo;
 		var retspace = nspace[0];
