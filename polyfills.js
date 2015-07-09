@@ -41,6 +41,26 @@ if (typeof String.prototype.endsWith !== 'function') {
 	};
 }
 
+//Array Pollyfills
+if(typeof Array.prototype.unique !== 'function'){
+	Array.prototype.unique = function(cb){
+		if(typeof cb !== 'function'){
+			   var u = {}, a = [];
+			   for(var i = 0, l = this.length; i < l; ++i){
+			      if(u.hasOwnProperty(this[i])) {
+			         continue;
+			      }
+			      a.push(this[i]);
+			      u[this[i]] = 1;
+			   }
+			   return a;
+		} else {
+			
+		}
+	};
+}
+
+//Custom Event
 if(typeof CustomEvent !== "function"){
 	function CustomEvent ( event, params ) {
 		   params = params || { bubbles: false, cancelable: false, detail: undefined };

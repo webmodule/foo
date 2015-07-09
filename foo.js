@@ -153,7 +153,70 @@
 			return false;
 		}
 	};
+	
+})(this);
 
+// is Resolver
+(function(foo) {
+	function getType(obj){
+		return Object.prototype.toString.call(obj).slice(8, -1);
+	}
+	function is(type, obj) {
+	    var clas = getTypel(obj);
+	    return obj !== undefined && obj !== null && clas === type;
+	}
+	is.Function = function(obj){
+		return is("Function",obj);
+	};
+	is.Array = function(obj){
+		return is("Array",obj);
+	};
+	is.Null = function(obj){
+		return is("Null",obj);
+	};
+	is.Undefined = function(obj){
+		return is("Undefined",obj);
+	};
+	is.Number = function(obj){
+		return is("Number",obj);
+	};
+	is.Value = function(obj){
+		var clas = getType(obj);
+		return !(clas === "Undefined" || clas === "Null") ;
+	};
+	is.Empty = function(obj){
+		var clas = getType(obj);
+		switch(clas){
+		case "Undefined" :
+		case "Null" :
+			return true;
+			break;
+		case "Boolean" :
+			return obj;
+			break;
+		case "Number" :
+			return obj===0;
+		case "String" :
+		case "Array" :
+			return (obj.length ===0);
+			break;
+		default: 
+		    for (var key in obj) {
+		        if (hasOwnProperty.call(obj, key)) return false;
+		    }
+		    return true;
+		    break;
+		}
+		return !(is.Undefined(obj) || is.Null(obj)) ;
+	};
+	window.is = is;
+
+	
+})(this);
+
+(function(foo) {
+
+	"use strict";
 	// By default, Underscore uses ERB-style template delimiters, change the
 	// following template settings to use alternative delimiters.
 	// evaluate : /<%([\s\S]+?)%>/g,
