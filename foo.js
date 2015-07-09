@@ -209,10 +209,10 @@
 		}
 		return !(is.Undefined(obj) || is.Null(obj)) ;
 	};
-	window.is = is;
-
+	foo.is = is;
 	
 })(this);
+
 
 (function(foo) {
 
