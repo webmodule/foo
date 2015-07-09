@@ -51,6 +51,6 @@
 		}
 		return (domain + '/' + parents.join('/')).replace(/(\/)+/g, '/');
 	};
-	foo.path = PATH;
+	foo.URI = PATH;
 
 })(this);
