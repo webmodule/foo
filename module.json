@@ -1,6 +1,6 @@
 {
 	"name" : "webmodules/foo",
 	"webmodules/foo": {
-		"js": ["polyfills.js", "foo.js", "stacktrace.js"]
+		"js": ["polyfills.js", "foo.js", "stacktrace.js","URI.js"]
 	}
 }
