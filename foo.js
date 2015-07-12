@@ -74,7 +74,7 @@
 			return mc;
 		},
 		module : function(moduleName) {
-			if (moduleName === undefined) {
+			if (moduleName !== undefined) {
 				return foo[moduleName];
 			} else if(this!==undefined){
 				return this.__modulePrototype__;
