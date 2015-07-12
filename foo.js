@@ -2,6 +2,10 @@
 
 	"use strict";
 
+	function ModuleContainer() {
+		// module Container, framework is supposed to extend its prototype
+	}
+
 	var mix = function(obj, proto) {
 		for ( var prop in proto) {
 			if (proto.hasOwnProperty(prop)) {
@@ -11,46 +15,104 @@
 		return obj;
 	};
 
-	var _define_ = function(moduleName, fromModuleName, definition) {
+	var namespace = function(_root, _nameSpace, _valObj) {
+		var root = _root;
+		var nameSpace = _nameSpace;
+		var valObj = _valObj;
+		if (typeof _root === "string") {
+			root = foo;
+			nameSpace = _root;
+			valObj = _nameSpace;
+		}
+		var nspace = nameSpace.split('.');
+		var win = root || foo;
+		var retspace = nspace[0];
+		for (var i = 0; i < nspace.length - 1; i++) {
+			if (!win[nspace[i]])
+				win[nspace[i]] = {};
+			retspace = nspace[i];
+			win = win[retspace];
+		}
+		return win[nspace[nspace.length - 1]] = valObj;
+	};
+	
+	var _create_ = function(moduleName, fromModuleName, definition) {
 		var fromModule = foo[fromModuleName] || {};
 		var thisModule = Object.create(fromModule);
-		return foo._namespace_(foo, moduleName, definition(thisModule)
+		return namespace(foo, moduleName, definition.apply(this,thisModule)
 				|| thisModule);
-		foo[moduleName] = definition(thisModule) || thisModule;
+		foo[moduleName] = definition.apply(this,thisModule) || thisModule;
 		return foo[moduleName];
 	};
-
-	foo._define_ = function(moduleName, fromModule, definition) {
-		if (typeof definition === 'function' && typeof fromModule === 'string') {
-			return _define_(moduleName, fromModule, definition);
+	
+	var _define_ = function(moduleName, fromModule, definition) {
+			if (typeof definition === 'function'
+				&& typeof fromModule === 'string') {
+			return _create_.apply(this,
+					moduleName, fromModule, definition);
 		} else if (typeof fromModule === 'function') {
-			return _define_(moduleName, null, fromModule);
+			return _create_.apply(this,
+					moduleName, null, fromModule);
 		} else if (typeof definition === 'object'
 				&& typeof fromModule === 'string') {
-			return _define_(moduleName, fromModule, function(thisModule) {
-				mix(thisModule, definition);
-			});
+			return _create_.apply(this,moduleName, fromModule,
+					function(thisModule) {
+						mix(thisModule, definition);
+					});
 		} else if (typeof fromModule === 'object') {
-			return _define_(moduleName, null, function(thisModule) {
+			return _create_.apply(this,moduleName, null, function(
+					thisModule) {
 				mix(thisModule, fromModule);
 			});
 		}
-	};
+	}; 
 
-	foo._module_ = function(moduleName) {
-		return foo[moduleName];
-	};
-
-	foo._tag_ = function(tagName, definition) {
-		return console.warn("No tag Registrar found");
-	};
-
-	foo._require_ = function() {
-		var modules = []
-		for ( var i in arguments) {
-			modules.push(foo._module_(arguments[i]));
+	ModuleContainer.prototype = {
+		define : function() {
+			var mc = new ModuleContainer();
+			mc.__modulePrototype__ = _define_.apply(mc, arguments);
+			return mc;
+		},
+		module : function(moduleName) {
+			if (moduleName === undefined) {
+				return foo[moduleName];
+			} else if(this!==undefined){
+				return this.__modulePrototype__;
+			}
+		},
+		tag : function(tagName, definition) {
+			return console.warn("No tag Registrar found");
+		},
+		require : function() {
+			return console.warn("No tag Registrar found");
 		}
-	};
+	}
+
+//	var _metaDef_ = {
+//		define : ModuleContainer.prototype.define,
+//		module : ModuleContainer.prototype.module,
+//		tag : ModuleContainer.prototype.tag,
+//		require : ModuleContainer.prototype.require,
+//		namespace : namespace
+//	};
+
+	foo._define_ = ModuleContainer.prototype.define;
+	foo._module_ = ModuleContainer.prototype.module;
+	foo._tag_ = ModuleContainer.prototype.tag;
+	foo._require_ = ModuleContainer.prototype.require;
+	foo._namespace_ = namespace;
+
+	["define","module","require","define","namespace"].map(function(prop){
+		if(foo[prop]===undefined){
+			foo[prop] = function(){
+				return foo["_"+prop+"_"].apply(foo,arguments);
+			}
+		}
+	});
+	
+	foo._setFoo_ = function(propName,propValue){
+		return foo["_"+propName+"_"] = propValue;
+	}
 
 	foo.registerModule = function registerModule(root, modeulName, cb) {
 
@@ -80,26 +142,12 @@
 
 	};
 
-	foo._namespace_ = function(_root, _nameSpace, _valObj) {
-		var root = _root;
-		var nameSpace = _nameSpace;
-		var valObj = _valObj;
-		if (typeof _root === "string") {
-			root = foo;
-			nameSpace = _root;
-			valObj = _nameSpace;
-		}
-		var nspace = nameSpace.split('.');
-		var win = root || foo;
-		var retspace = nspace[0];
-		for (var i = 0; i < nspace.length - 1; i++) {
-			if (!win[nspace[i]])
-				win[nspace[i]] = {};
-			retspace = nspace[i];
-			win = win[retspace];
-		}
-		return win[nspace[nspace.length - 1]] = valObj;
-	};
+	foo.mixin = mix;
+
+})(this);
+
+// is Utility functions
+(function(foo) {
 
 	foo.debounce = function debounce(func, wait, immediate) {
 		var timeout, args, context, timestamp, result;
@@ -154,68 +202,66 @@
 			return false;
 		}
 	};
-	
-	foo.mixin = mix;
-	
+
 })(this);
 
 // is Resolver
 (function(foo) {
-	function getType(obj){
+	function getType(obj) {
 		return Object.prototype.toString.call(obj).slice(8, -1);
 	}
 	function is(type, obj) {
-	    var clas = getTypel(obj);
-	    return obj !== undefined && obj !== null && clas === type;
+		var clas = getTypel(obj);
+		return obj !== undefined && obj !== null && clas === type;
 	}
-	is.Function = function(obj){
-		return is("Function",obj);
+	is.Function = function(obj) {
+		return is("Function", obj);
 	};
-	is.Array = function(obj){
-		return is("Array",obj);
+	is.Array = function(obj) {
+		return is("Array", obj);
 	};
-	is.Null = function(obj){
-		return is("Null",obj);
+	is.Null = function(obj) {
+		return is("Null", obj);
 	};
-	is.Undefined = function(obj){
-		return is("Undefined",obj);
+	is.Undefined = function(obj) {
+		return is("Undefined", obj);
 	};
-	is.Number = function(obj){
-		return is("Number",obj);
+	is.Number = function(obj) {
+		return is("Number", obj);
 	};
-	is.Value = function(obj){
+	is.Value = function(obj) {
 		var clas = getType(obj);
-		return !(clas === "Undefined" || clas === "Null") ;
+		return !(clas === "Undefined" || clas === "Null");
 	};
-	is.Empty = function(obj){
+	is.Empty = function(obj) {
 		var clas = getType(obj);
-		switch(clas){
-		case "Undefined" :
-		case "Null" :
+		switch (clas) {
+		case "Undefined":
+		case "Null":
 			return true;
 			break;
-		case "Boolean" :
+		case "Boolean":
 			return obj;
 			break;
-		case "Number" :
-			return obj===0;
-		case "String" :
-		case "Array" :
-			return (obj.length ===0);
+		case "Number":
+			return obj === 0;
+		case "String":
+		case "Array":
+			return (obj.length === 0);
 			break;
-		default: 
-		    for (var key in obj) {
-		        if (hasOwnProperty.call(obj, key)) return false;
-		    }
-		    return true;
-		    break;
+		default:
+			for ( var key in obj) {
+				if (hasOwnProperty.call(obj, key))
+					return false;
+			}
+			return true;
+			break;
 		}
-		return !(is.Undefined(obj) || is.Null(obj)) ;
+		return !(is.Undefined(obj) || is.Null(obj));
 	};
 	foo.is = is;
-	
-})(this);
 
+})(this);
 
 (function(foo) {
 
@@ -259,7 +305,7 @@
 
 	foo.template = function(text, data, settings) {
 		var render;
-		settings = $.extend({}, foo.template.settings,settings);
+		settings = $.extend({}, foo.template.settings, settings);
 
 		// Combine delimiters into one regular expression via alternation.
 		var matcher = new RegExp([ (settings.escape || noMatch).source,
