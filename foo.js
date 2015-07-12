@@ -8,6 +8,7 @@
 				obj[prop] = proto[prop];
 			}
 		}
+		return obj;
 	};
 
 	var _define_ = function(moduleName, fromModuleName, definition) {
@@ -153,6 +154,8 @@
 			return false;
 		}
 	};
+	
+	foo.mixin = mix;
 	
 })(this);
 
