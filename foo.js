@@ -211,11 +211,14 @@
 		return Object.prototype.toString.call(obj).slice(8, -1);
 	}
 	function is(type, obj) {
-		var clas = getTypel(obj);
+		var clas = getType(obj);
 		return obj !== undefined && obj !== null && clas === type;
 	}
 	is.Function = function(obj) {
 		return is("Function", obj);
+	};
+	is.Object = function(obj) {
+		return is("Object", obj);
 	};
 	is.Array = function(obj) {
 		return is("Array", obj);
@@ -260,7 +263,18 @@
 		return !(is.Undefined(obj) || is.Null(obj));
 	};
 	foo.is = is;
+	
+})(this);
 
+(function(foo) {
+	var when = (foo.is.Function(document.addEventListener)) 
+	? (function (f){/ing/.test(document.readyState)?document.addEventListener('DOMContentLoaded',f):f();})
+	: (function (f){/in/.test(document.readyState)?setTimeout(function(){f()},9):f()}) ;
+
+	when.ready = function(f){
+		return when(f);
+	};
+	foo.when = when;
 })(this);
 
 (function(foo) {
