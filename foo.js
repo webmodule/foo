@@ -48,19 +48,19 @@
 	var _define_ = function(moduleName, fromModule, definition) {
 			if (typeof definition === 'function'
 				&& typeof fromModule === 'string') {
-			return _create_.apply(this,
+			return _create_.call(this,
 					moduleName, fromModule, definition);
 		} else if (typeof fromModule === 'function') {
-			return _create_.apply(this,
+			return _create_.call(this,
 					moduleName, null, fromModule);
 		} else if (typeof definition === 'object'
 				&& typeof fromModule === 'string') {
-			return _create_.apply(this,moduleName, fromModule,
+			return _create_.call(this,moduleName, fromModule,
 					function(thisModule) {
 						mix(thisModule, definition);
 					});
 		} else if (typeof fromModule === 'object') {
-			return _create_.apply(this,moduleName, null, function(
+			return _create_.call(this,moduleName, null, function(
 					thisModule) {
 				mix(thisModule, fromModule);
 			});
