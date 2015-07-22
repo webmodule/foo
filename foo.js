@@ -39,9 +39,9 @@
 	var _create_ = function(moduleName, fromModuleName, definition) {
 		var fromModule = foo[fromModuleName] || {};
 		var thisModule = Object.create(fromModule);
-		return namespace(foo, moduleName, definition.apply(this,thisModule)
+		return namespace(foo, moduleName, definition.call(this,thisModule)
 				|| thisModule);
-		foo[moduleName] = definition.apply(this,thisModule) || thisModule;
+		foo[moduleName] = definition.call(this,thisModule) || thisModule;
 		return foo[moduleName];
 	};
 	
