@@ -102,17 +102,17 @@
 	foo._require_ = ModuleContainer.prototype.require;
 	foo._namespace_ = namespace;
 
-	["define","module","require","define","namespace"].map(function(prop){
+	["define","module","define","namespace"].map(function(prop){
 		if(foo[prop]===undefined){
 			foo[prop] = function(){
 				return foo["_"+prop+"_"].apply(foo,arguments);
-			}
+			};
 		}
 	});
 	
 	foo._setFoo_ = function(propName,propValue){
 		return foo["_"+propName+"_"] = propValue;
-	}
+	};
 
 	foo.registerModule = function registerModule(root, modeulName, cb) {
 
@@ -232,6 +232,9 @@
 	is.Number = function(obj) {
 		return is("Number", obj);
 	};
+	is.String = function(obj) {
+		return is("String", obj);
+	};
 	is.Value = function(obj) {
 		var clas = getType(obj);
 		return !(clas === "Undefined" || clas === "Null");
@@ -263,7 +266,7 @@
 		return !(is.Undefined(obj) || is.Null(obj));
 	};
 	is.Valid = function(condition,message){
-		if(!!condition && is.String(message)){
+		if(!condition && is.String(message)){
 			throw Error(message);
 		} return !!condition;
 	};
