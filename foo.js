@@ -102,7 +102,7 @@
 	foo._require_ = ModuleContainer.prototype.require;
 	foo._namespace_ = namespace;
 
-	["define","module","define","namespace"].map(function(prop){
+	["define","module","namespace"].map(function(prop){
 		if(foo[prop]===undefined){
 			foo[prop] = function(){
 				return foo["_"+prop+"_"].apply(foo,arguments);
