@@ -33,7 +33,10 @@
 			retspace = nspace[i];
 			win = win[retspace];
 		}
-		return win[nspace[nspace.length - 1]] = valObj;
+		if(valObj !== undefined){
+			win[nspace[nspace.length - 1]] = valObj;
+		}
+		return win[nspace[nspace.length - 1]];
 	};
 	
 	var _create_ = function(moduleName, fromModuleName, definition) {
@@ -86,7 +89,7 @@
 		require : function() {
 			return console.warn("No tag Registrar found");
 		}
-	}
+	};
 
 //	var _metaDef_ = {
 //		define : ModuleContainer.prototype.define,
