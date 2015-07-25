@@ -262,6 +262,11 @@
 		}
 		return !(is.Undefined(obj) || is.Null(obj));
 	};
+	is.Valid = function(condition,message){
+		if(!!condition && is.String(message)){
+			throw Error(message);
+		} return !!condition;
+	};
 	foo.is = is;
 	
 })(this);
