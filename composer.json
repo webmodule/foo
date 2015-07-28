@@ -1,10 +1,7 @@
 {
-	"name" : "webmodules/foo",
-	"type" : "library",
-	"description" : "Module loader interface and polyfills",
-	"keywords" : [
-		"module",
-		"polyfills"
-	],
-	"license" : "MIT"
+	"name": "webmodules/foo",
+	"type": "library",
+	"description": "Module loader interface and polyfills",
+	"keywords": ["module", "polyfills"],
+	"license": "MIT"
 }
