@@ -119,6 +119,12 @@
 
 	foo.registerModule = function registerModule(root, modeulName, cb) {
 
+		if((typeof root === "string")){
+			cb = modeulName;
+			modeulName = root;
+			root = foo;
+		};
+		
 		if (root.utils && typeof root.utils.define === 'function') {
 			// Utils Package System
 			return utils.define(modeulName).as(cb.bind(root));
@@ -139,7 +145,7 @@
 				// EXPORT based system
 				module.exports = factory();
 			} else {
-				root[modeulName] = factory();
+				namespace(root,modeulName,factory());
 			}
 		}
 
