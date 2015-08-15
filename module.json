@@ -7,6 +7,10 @@
 		"js": ["URI.js"],
 		"on": ["webmodules/foo"]
 	},
+	"webmodules/foo/define": {
+		"js" : ["define.js"],
+		"on": ["webmodules/foo/uri"]
+	},
 	"webmodules/foo/stacktrace": {
 		"js": ["stacktrace.js"],
 		"on": ["webmodules/foo"]

@@ -34,13 +34,15 @@
 		info.dir = x.join('/');
 		return info;
 	};
+	
 	PATH.clean = function(url){
 		return url.replace(/[\/]+/g, '/');
-	}
+	};
+	
 	PATH.resolve = function(url) {
 		var protocol = null;
 		if(PATH.isRemote(url)){
-			var urls = url.split("://")
+			var urls = url.split("://");
 			protocol = urls[0];
 			url = urls[1];
 		}
@@ -54,7 +56,7 @@
 				// Don't need to do anything here
 				break;
 			case '..':
-				parents.pop()
+				parents.pop();
 				break;
 			default:
 				parents.push(ars[i]);
@@ -109,7 +111,7 @@
 		var name, key, value;
 		if (foo.is.Array(obj)) {
 			for ( var key in obj) {
-				value = obj[key]
+				value = obj[key];
 				if (rbracket.test(prefix))
 					add(prefix, value);
 				else
@@ -125,7 +127,7 @@
 	};
 
 	PATH.param = PATH.encode = function(obj) {
-		var prefix, key, value
+		var prefix, key, value;
 		serialized = [], add = function(key, value) {
 			value = foo.is.Function(value) ? value() : (value == null ? ""
 					: value);
