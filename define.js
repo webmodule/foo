@@ -154,6 +154,9 @@
 		instance : function() {
 			var newObj = Object.create(this);
 			(newObj._create_ || newObj._instance_).apply(newObj, arguments);
+      if(is.Object(arguments[0]) && is.Object(arguments[0].options)){
+        newObj.options = arguments[0].options;
+      } else newObj.options = {};
 			return newObj;
 		},
 		_instance_ : function() {
