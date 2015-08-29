@@ -92,7 +92,7 @@
         LIB[parentModuleName].callOwnFunction("_extended_", this);
       } else {
         console.error("Parent Module " + parentModuleName
-          + " does not exists for module " + this.name);
+          + " does not exists for module " + this.__moduleName__);
       }
       return this;
     },
