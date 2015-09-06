@@ -188,9 +188,12 @@
       return this;
     },
     is: function (type) {
-      if (this.__extend__ && this.__extend__[0] && is.String(type)) {
+      var _type = is.String(type) ? type : type.name;
+      if(this.name === _type){
+        return true;
+      } else if (this.__extend__ && this.__extend__[0] && is.String(_type)) {
         return !!this.__extend__.filter(function (iType) {
-          return iType === type;
+          return iType === _type;
         })[0];
       }
     }
