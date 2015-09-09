@@ -115,6 +115,16 @@
     }
   };
 
+  /**
+   *  warnings, traces by default
+   *  can be suppressed by `silent` option.
+   */
+  LOG.error = function () {
+    if(flags.error){
+      return console.error.apply(console, arguments);
+    }
+  };
+
   LOG.config = function (config) {
     for(var i in config){
       if(config[i]!==undefined){
