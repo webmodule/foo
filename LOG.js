@@ -1,7 +1,7 @@
 (function (foo) {
   ///CONSOLE LOG
   var flags = {
-    debug : true, warn : true, error : true, trace : true
+    debug : true, warn : true, error : true, trace : true, info : true
   };
   var LOG = function () {
     return console.log.apply(console, arguments);
@@ -123,4 +123,6 @@
     }
   };
 
-});
+  foo.LOG = LOG;
+
+})(this);

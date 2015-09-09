@@ -14,5 +14,9 @@
 	"webmodules/foo/stacktrace": {
 		"js": ["stacktrace.js"],
 		"on": ["webmodules/foo"]
-	}
+	},
+  "webmodules/foo/log": {
+    "js": ["LOG.js"],
+    "on": ["webmodules/foo/stacktrace"]
+  }
 }
