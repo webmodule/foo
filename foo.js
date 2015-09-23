@@ -10,13 +10,14 @@
     return obj;
   };
 
-  foo.debounce = function debounce(func, wait, immediate) {
+  foo.debounce = function debounce(func, wait, immediate,fname) {
     var timeout, args, context, timestamp, result;
+    var fname = fname || func.name;
     return function () {
       if (context !== undefined && context !== this) {
-        if (func.name && (!this.hasOwnProperty(func.name) || this[func.name] === context[func.name])) {
-          this[func.name] = foo.debounce(func, wait, immediate);
-          return this[func.name].apply(this, arguments);
+        if (fname && (!this.hasOwnProperty(fname) || this[func.name] === context[fname])) {
+          this[fname] = foo.debounce(func, wait, immediate,fname);
+          return this[fname].apply(this, arguments);
         }
       }
       context = this;
