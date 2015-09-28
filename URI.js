@@ -116,7 +116,7 @@
 					add(prefix, value);
 				else
 					PATH.buildParams(prefix + "["
-							+ (typeof v === "object" ? i : "") + "]", value,
+              + (typeof value === "object" ? key : "") + "]", value,
 							add);
 			}
 		} else if (foo.is.Object(obj)) {
