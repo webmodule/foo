@@ -111,30 +111,35 @@
     },
     as: function (definition) {
       var self = this;
-      console.debug("Defining " + this.__moduleName__);
-      if (typeof definition === 'function') {
-        var ChildProto;
-        if (this.dependsOn === undefined) {
-          ChildProto = definition.call(this,
-            this.__modulePrototype__, this.__modulePrototype__);
-        } else {
-          var deps = [ this.__modulePrototype__ ];
-          for (var i in this.dependsOn) {
-            var mod = foo._module_(this.dependsOn[i], false);
-            deps.push(mod);
-            if (mod === undefined) {
-              console.error("Module " + this.dependsOn[i] + " is not loaded, hence cannot be used by " + this.__moduleName__);
+      if(this.___defined___ === undefined){
+        console.info("Defining " + this.__moduleName__);
+        if (typeof definition === 'function') {
+          var ChildProto;
+          if (this.dependsOn === undefined) {
+            ChildProto = definition.call(this,
+              this.__modulePrototype__, this.__modulePrototype__);
+          } else {
+            var deps = [ this.__modulePrototype__ ];
+            for (var i in this.dependsOn) {
+              var mod = foo._module_(this.dependsOn[i], false);
+              deps.push(mod);
+              if (mod === undefined) {
+                console.error("Module " + this.dependsOn[i] + " is not loaded, hence cannot be used by " + this.__moduleName__);
+              }
             }
+            ChildProto = definition.apply(this, deps);
           }
-          ChildProto = definition.apply(this, deps);
+          if (ChildProto !== undefined) {
+            this.mixin(ChildProto);
+          }
+        } else if (typeof definition === "object") {
+          this.mixin(definition);
         }
-        if (ChildProto !== undefined) {
-          this.mixin(ChildProto);
-        }
-      } else if (typeof definition === "object") {
-        this.mixin(definition);
+        this.callOwnFunction("_define_");
+        this.___defined___ = true;
+      } else {
+        console.warn("Cannot be redefined : " + this.__moduleName__);
       }
-      this.callOwnFunction("_define_");
       return this;
     },
     callOwnFunction: function (prop) {
@@ -222,21 +227,24 @@
         definition = definition2;
       }
     }
+    if(LIB[moduleName] === undefined){
+      LIB[moduleName] = new Moduler(new AbstractModule(moduleName), onModules);
+      LIB[moduleName].__moduleName__ = moduleName;
 
-    LIB[moduleName] = new Moduler(new AbstractModule(moduleName), onModules);
-    LIB[moduleName].__moduleName__ = moduleName;
+      if (is.String(extendsFrom)) {
+        LIB[moduleName].extend(extendsFrom);
+      }
 
-    if (is.String(extendsFrom)) {
-      LIB[moduleName].extend(extendsFrom);
+      if (definition !== undefined) {
+        LIB[moduleName].as(definition);
+      }
+
+      _define_.ready(function () {
+        LIB[moduleName].callOwnFunction("_ready_");
+      });
+    } else {
+      console.warn("Duplicate definition for module ", moduleName);
     }
-
-    if (definition !== undefined) {
-      LIB[moduleName].as(definition);
-    }
-
-    _define_.ready(function () {
-      LIB[moduleName].callOwnFunction("_ready_");
-    });
     return LIB[moduleName];
   };
   _define_.foo = true;
