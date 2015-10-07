@@ -75,7 +75,7 @@
 			if (pairs[i]) {
 				var pair = pairs[i].split('=');
 				var accessors = [];
-				var name = decodeURIComponent(pair[0]), value = decodeURIComponent(pair[1]);
+				var name = decodeURIComponent(pair[0]), value = decodeURIComponent(pair[1].replace("+", "%20"));
 
 				var name = name.replace(/\[([^\]]*)\]/g, function(k, acc) {
 					accessors.push(acc);
