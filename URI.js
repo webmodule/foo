@@ -32,6 +32,9 @@
 		info.isFile = (_path.split('/').length === 1);
 		info.file = x.pop();
 		info.dir = x.join('/');
+    if(_path.indexOf("?")===0 || _path.indexOf("#")===0){
+      info.pathname = foo.location ? foo.location.pathname : "";
+    }
 		return info;
 	};
 	
