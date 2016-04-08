@@ -145,6 +145,43 @@
 
 })(this);
 
+
+(function (foo) {
+
+  function JSONPath(path){
+    if(this === window){
+      return new window.JSONPath(path);
+    }
+    this.keys = path.split(".");
+  }
+
+  JSONPath.prototype.load = function(sourceObj, defaultValue,self){
+    var value = sourceObj;
+    for(var i in this.keys){
+      if(is.Object(value) || is.Array(value)){
+        value = value[this.keys[i]];
+      } else break;
+    }
+    if(!is.Undefined(value)){
+      return value;
+    }
+    return  defaultValue;
+  };
+
+  foo.JSONPath = JSONPath;
+
+})(this);
+
+(function (foo) {
+  var isCorrupted = {"null" : true, "undefined" : true };
+  function to(){}
+  to.List = function(str){
+    return is.String(str) && !is.Empty(str) && !isCorrupted[str] ? str.split(",") : (is.Array(str) ? str : []);
+  };
+  foo.to = to;
+})(this);
+
+
 (function (foo) {
   var when = (foo.is.Function(document.addEventListener))
     ? (function (f) {
