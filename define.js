@@ -105,6 +105,9 @@
       for (var i in ChildProto) {
         if (ChildProto.hasOwnProperty(i) === true) {
           this.__modulePrototype__[i] = ChildProto[i];
+          if(is.Function(this.__modulePrototype__[i]) && this.__modulePrototype__[i].__fun__ === true){
+            this.__modulePrototype__[i].__fun__ = i;
+          }
         }
       }
       return this;
@@ -147,6 +150,18 @@
         && typeof this.__modulePrototype__[prop] === "function") {
         return this.__modulePrototype__[prop].apply(this.__modulePrototype__, arguments);
       }
+    },
+    super : function (callback) {
+      var wrapper;
+      wrapper = function(){
+        var ret;
+        if(wrapper && wrapper.__fun__ && is.Function(this.parent()[wrapper.__fun__])){
+           ret = this.parent()[wrapper.__fun__].apply(this,arguments);
+        }
+        return callback.apply(this,[ret].concat(Array.prototype.slice.call(arguments)))
+      };
+      wrapper.__fun__ = true;
+      return wrapper;
     }
   };
 
