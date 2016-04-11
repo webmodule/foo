@@ -151,6 +151,12 @@
         return this.__modulePrototype__[prop].apply(this.__modulePrototype__, arguments);
       }
     },
+    /**
+     * @Deprecated - it is recursive function which can cause 'Maximum call stack size exceeded' if multiple supers are used.
+     *
+     * @param callback
+     * @returns {wrapper}
+     */
     super : function (callback) {
       var wrapper;
       wrapper = function(){
