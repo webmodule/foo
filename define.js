@@ -178,7 +178,7 @@
   var AbstractModule = function AbstractModule(moduleName, file) {
     this.name = moduleName;
     this.__file__ = file;
-    this.__dir__ = "";
+    this.__dir__ = null;
     this.__extend__ = [];
     this.__id__ = (++counter__id__);
   };
@@ -198,6 +198,7 @@
     _instance_: function () {
     },
     path: function (path) {
+      this.__dir__ = this.__dir__ || "";
       return foo.URI(path, this.__dir__);
     },
     parent: function () {
@@ -260,9 +261,16 @@
         LIB[moduleName].as(definition);
       }
 
-      _define_.ready(function () {
-        LIB[moduleName].callOwnFunction("_ready_");
-      });
+      var _readyCheck_ = function(){
+        if(LIB[moduleName].__modulePrototype__.__dir__ == null){
+          foo.setTimeout(function(){
+            _readyCheck_();
+          },200);
+        } else {
+          LIB[moduleName].callOwnFunction("_ready_");
+        }
+      };
+      _define_.ready(_readyCheck_);
     } else {
       console.warn("Duplicate definition for module ", moduleName);
     }
