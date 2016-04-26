@@ -262,6 +262,7 @@
       }
 
       var _readyCheck_ = function(){
+        //Module should not be ready unitl its path is resolved, its important in case module is self instantiator
         if(LIB[moduleName].__modulePrototype__.__dir__ == null){
           foo.setTimeout(function(){
             _readyCheck_();
