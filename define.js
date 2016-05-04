@@ -18,6 +18,19 @@
    * @returns {*|{}|h.__modulePrototype__}
    */
   var _module_ = function (moduleName, skipFallbackOrCallback) {
+    if(is.Array(moduleName)){
+      var umodules = [],modlen=moduleName.length,umoduleNameFun =  function(mod){
+        umodules[moduleName.indexOf(mod.name)] = mod;
+        modlen--;
+        if(modlen==0){
+          skipFallbackOrCallback.apply(this,umodules);
+        }
+      };
+      for(var i in moduleName){
+        _module_(moduleName[i],umoduleNameFun);
+      }
+      return;
+    }
     if (LIB[moduleName]) {
       if (is.Function(skipFallbackOrCallback)) {
         skipFallbackOrCallback(LIB[moduleName].__modulePrototype__);
@@ -237,7 +250,7 @@
    * @returns {*}
    */
   var _define_ = function (moduleInfo, definition, definition2) {
-    var moduleName, onModules, extendsFrom;
+    var moduleName, onModules, extendsFrom, moDef;
     if (typeof moduleInfo === "object") {
       moduleName = moduleInfo.name || moduleInfo.module;
       onModules = moduleInfo.using || moduleInfo.dependsOn || moduleInfo.modules;
@@ -250,32 +263,37 @@
       }
     }
     if(LIB[moduleName] === undefined){
-      LIB[moduleName] = new Moduler(new AbstractModule(moduleName), onModules);
-      LIB[moduleName].__moduleName__ = moduleName;
+      moDef = new Moduler(new AbstractModule(moduleName), onModules);
+      moDef.__moduleName__ = moduleName;
+
+      if(moduleName){
+        LIB[moduleName] = moDef;
+      }
 
       if (is.String(extendsFrom)) {
-        LIB[moduleName].extend(extendsFrom);
+        moDef.extend(extendsFrom);
       }
 
       if (definition !== undefined) {
-        LIB[moduleName].as(definition);
+        moDef.as(definition);
       }
 
       var _readyCheck_ = function(){
         //Module should not be ready unitl its path is resolved, its important in case module is self instantiator
-        if(LIB[moduleName].__modulePrototype__.__dir__ == null){
+        if(moDef.__modulePrototype__.__dir__ == null){
           foo.setTimeout(function(){
             _readyCheck_();
           },200);
         } else {
-          LIB[moduleName].callOwnFunction("_ready_");
+          moDef.callOwnFunction("_ready_");
         }
       };
       _define_.ready(_readyCheck_);
     } else {
+      moDef = LIB[moduleName];
       console.warn("Duplicate definition for module ", moduleName);
     }
-    return LIB[moduleName];
+    return moDef;
   };
   _define_.foo = true;
   _define_.ready = function (cb) {
