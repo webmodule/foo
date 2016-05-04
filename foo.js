@@ -43,6 +43,16 @@
     };
   };
 
+  foo.until = function(fun,condition,delay){
+      if((is.Function(condition) && condition()) || condition ==true ){
+        fun();
+      } else {
+        foo.setTimeout(function(){
+          foo.until(fun,condition,delay)
+        },delay||200)
+      }
+  };
+
   foo.getUUID = function () {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
       function (c) {
