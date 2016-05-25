@@ -215,11 +215,16 @@
 
 (function(foo) {
     function Enum() {
+        this.add.apply(this, arguments);
+    }
+    Enum.prototype.add = function() {
         for (var i in arguments) {
             this[arguments[i]] = new String(arguments[i]);
         }
-    }
-
+    };
+    Enum.prototype.toList = function() {
+        return Object.keys(this);
+    };
     foo.Enum = Enum;
 })(this);
 
