@@ -60,7 +60,13 @@
 			return this.indexOf(suffix, this.length - suffix.length) !== -1;
 		};
 	}
-
+	
+	if (typeof String.prototype.startsWith !== 'function') {
+		String.prototype.startsWith = function(prefix) {
+			return this.indexOf(prefix) === 0;
+		};
+	}
+	
 	// Array Pollyfills
 	if (typeof Array.prototype.unique !== 'function') {
 		Object.defineProperties(Array.prototype, {
