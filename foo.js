@@ -107,7 +107,7 @@
         return is("Null", obj);
     };
     is.Undefined = function(obj) {
-        return is("Undefined", obj);
+        return getType(obj) === "Undefined";
     };
     is.Number = function(obj) {
         return is("Number", obj);
