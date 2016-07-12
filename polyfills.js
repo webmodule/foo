@@ -85,6 +85,23 @@
 			}
 		});
 	}
+	if (typeof Array.prototype.sortBy !== 'function') {
+                Object.defineProperties(Array.prototype, {
+                    sortBy : {
+                        value : function(key,desc){
+                            var order = desc ? -1 : 1;
+                            return this.sort(function(a,b){
+                                if(a[key] > b[key]){
+                                    return order * 1;
+                                } else if(a[key] < b[key]){
+                                    return order * -1;
+                                }
+                                return 0;
+                            });
+                        }
+                    }
+                });
+        }
 
 	
 })(this);
