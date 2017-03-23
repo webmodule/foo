@@ -78,6 +78,9 @@
 			if (pairs[i]) {
 				var pair = pairs[i].split('=');
 				var accessors = [];
+                if(pair[1]===undefined){
+                    pair[1] = "";
+                }
 				var name = decodeURIComponent(pair[0]), value = decodeURIComponent(pair[1].replace(/[\+]/g, "%20"));
 
 				var name = name.replace(/\[([^\]]*)\]/g, function(k, acc) {
