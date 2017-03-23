@@ -191,6 +191,30 @@
     to.List = function(str) {
         return is.String(str) && !is.Empty(str) && !isCorrupted[str] ? str.split(",") : (is.Array(str) ? str : []);
     };
+    to.Native = function(str) {
+        if(is.String(str)){
+            switch (str.toLowerCase()) {
+                case "undefined":
+                    return undefined;
+                case "null":
+                    return null;
+                    break;
+                case "true":
+                    return true;
+                    break;
+                case "false":
+                    return false;
+                case "":
+                    return "";
+                default: {
+                    if(!isNaN(str)){
+                        return str-0;
+                    }
+                }
+            }
+        }
+        return str;
+    };
     foo.to = to;
 })(this);
 
