@@ -314,7 +314,20 @@
   };
 
   _define_("AbstractModule", AbstractModule.prototype);
-
+  if (typeof foo.define === 'function' && foo.define.amd) {
+      // AMD based package system
+      _old_define_ = foo.define;
+      foo.define =  function(modules,factor,factor3){
+          if( ( is.Array(modules) && is.Function(factor)  ) ||
+              ( is.Function(modules) && is.Undefined(modules) ) ||
+              ( is.String(modules) && is.Function(factor) ) ||
+              ( is.String(modules) && is.Array(factor) && is.Function(factor3) ) ){
+              console.info("AMD:",modules,factor);
+              return _old_define_.apply(foo,arguments);
+          } else return _define_.apply(foo,arguments);
+      };
+      foo.define.amd = true;
+  }
   _define_.setSafe("define", _define_);
   _define_.setSafe("module", _module_);
 
