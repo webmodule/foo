@@ -178,6 +178,35 @@
         return  defaultValue;
     };
 
+    var setKeyValue =  function(src,path,value){
+        if (!is.Object(src) && !is.Array(src)) {
+            src = is.Number(path) ? [] : {};
+            src[path] = value;
+        } else {
+            src[path] = value;
+        }
+        return src;
+    };
+
+    JSONPath.prototype.save = function (sourceObj, defaultValue, self) {
+        var value = sourceObj
+        for (var i = 0; i < this.keys.length-1 ; i++) {
+            var key = this.keys[i];
+            if (!is.Object(value[key]) && !is.Array(value[key])) {
+                if(is.Number(nextKey = this.keys[i+1])){
+                    value[key] = [];
+                } else {
+                    value[key] = {};
+                }
+            }
+            value = setKeyValue(value,key,value[key]);
+            value = value[key];
+        }
+        value = setKeyValue(value,this.keys[i],defaultValue);
+        return defaultValue;
+    };
+
+
     foo.JSONPath = JSONPath;
 
 })(this);
