@@ -279,14 +279,21 @@
       }
 
       var _readyCheck_ = function(){
+        if(moDef.___readyed___){
+          return;
+        }
+        if(moDef.___defined___){
+            return foo.setTimeout(function(){
+                moDef.callOwnFunction("_ready_");
+            },200);
+        }
         //Module should not be ready unitl its path is resolved, its important in case module is self instantiator
         if(moDef.__modulePrototype__.__dir__ == null){
-          foo.setTimeout(function(){
-            _readyCheck_();
-          },200);
-        } else {
-          moDef.callOwnFunction("_ready_");
+            return foo.setTimeout(function(){
+                _readyCheck_();
+            },200);
         }
+        moDef.callOwnFunction("_ready_");
       };
       _define_.ready(_readyCheck_);
     } else {
