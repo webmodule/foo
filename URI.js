@@ -233,7 +233,7 @@
       // },
 
       get origin() {
-        return this._anchorElement.origin;
+        return this._anchorElement.origin || foo.location.origin;
       },
 
       get host() {
@@ -359,5 +359,7 @@
     return URL;
 
   })();
-
+	
+	foo.URL = _URL;
+	
 })(this);
