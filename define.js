@@ -236,6 +236,18 @@
           return iType === _type;
         })[0];
       }
+    },
+    isParent : function (type) {
+      var _type = is.String(type) ? type : type.name;
+      if (this.__extend__ && this.__extend__[0] && is.String(_type)) {
+          if(this.__extend__[0] === _type){
+              return true;
+          } else if(LIB[this.__extend__[0]] && LIB[this.__extend__[0]].__modulePrototype__){
+              return LIB[this.__extend__[0]].__modulePrototype__.is(_type);
+          } else {
+              return false;
+          }
+      }
     }
   };
 
