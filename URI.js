@@ -20,6 +20,15 @@
 	PATH.isRemote = function(path) {
 		return path.indexOf('http://') == 0 || path.indexOf('https://') == 0;
 	};
+    PATH.getHostName = function(url) {
+        var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+        if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+            return match[2];
+        }
+        else {
+            return null;
+        }
+    }
 	PATH.info = function(_path, _context) {
 		var path = PATH(_path, _context);
 		var info;
@@ -37,11 +46,11 @@
     }
 		return info;
 	};
-	
+
 	PATH.clean = function(url){
 		return url.replace(/[\/]+/g, '/');
 	};
-	
+
 	PATH.resolve = function(url) {
 		var protocol = null;
 		if(PATH.isRemote(url)){
@@ -196,6 +205,9 @@
       if (anchorElement.href === '')
         throw new TypeError('Invalid URL');
 
+      var _xtraElem = { url: url };
+      Object.defineProperty(this, '_xtraElem', {value: _xtraElem});
+
       Object.defineProperty(this, '_anchorElement', {value: anchorElement});
     }
 
@@ -233,7 +245,7 @@
       // },
 
       get origin() {
-        return this._anchorElement.origin || foo.location.origin;
+        return this._anchorElement.origin || (this.protocol + "//" + this.host);
       },
 
       get host() {
@@ -359,7 +371,7 @@
     return URL;
 
   })();
-	
+
 	foo.URL = _URL;
-	
+
 })(this);
